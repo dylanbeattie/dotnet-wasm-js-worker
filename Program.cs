@@ -8,10 +8,9 @@ public partial class WasmTaskRunner
 {
 
 	[JSExport]
-	public static Task RunAsync(int delayInMillseconds) => Task.Delay(delayInMillseconds);
-	// Task.Run(async delegate {
-	// 	Task.Delay(delayInMillseconds);
-	// 	return $"Done in {delayInMillseconds} ms. It's now {DateTime.Now}";
-	// });
+	public static Task<string> RunAsync(int delayInMillseconds) => Task.Run(async delegate {
+	 	await Task.Delay(delayInMillseconds);
+	 	return $"Done in {delayInMillseconds} ms. It's now {DateTime.Now}";
+	});
 
 }
