@@ -7,15 +7,16 @@ const { setModuleImports, getAssemblyExports, getConfig } = await dotnet
 
 const config = getConfig();
 const exports = await getAssemblyExports(config.mainAssemblyName);
-await dotnet.run();
+// await dotnet.run();
 
-function RunWasm(delay) {
-	return exports.WasmTaskRunner.RunAsync(delay);
-}
+// async function RunWasm(delay) {
+// 	return
+// }
 
 self.addEventListener('message', async function (message) {
 	console.log('Worker: Message received from main script');
-	var result = RunWasm(100);
 	console.log(message.data);
-	this.postMessage({ message: "done", result: result });
+	await exports.WasmTaskRunner.RunAsync(500);
+	console.log("finished awaiting .NET thing");
+	this.postMessage({ message: "done" });
   });
