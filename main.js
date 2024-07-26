@@ -1,10 +1,14 @@
-import { dotnet } from '/bin/Debug/net8.0-browser/wwwroot/_framework/dotnet.js'
+function handleMessageFromWorker(message) {
+    console.log("message from worker:");
+	console.log(message.data);
+}
 
-const { setModuleImports, getAssemblyExports, getConfig } = await dotnet
-    .withDiagnosticTracing(false)
-    .withApplicationArgumentsFromQuery()
-    .create();
+const worker = new Worker("worker.js", { type: 'module' });
+worker.addEventListener("message", handleMessageFromWorker);
 
-const config = getConfig();
-const exports = await getAssemblyExports(config.mainAssemblyName);
-await dotnet.run();
+document.body.addEventListener("click", function() {
+	console.log("click");
+	worker.postMessage({ foo: "bar" });
+});
+
+console.log("brrr");
